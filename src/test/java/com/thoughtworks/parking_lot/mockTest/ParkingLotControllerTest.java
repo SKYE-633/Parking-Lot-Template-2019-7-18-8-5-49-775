@@ -2,7 +2,7 @@ package com.thoughtworks.parking_lot.mockTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.parking_lot.controller.ParkingLotController;
-import com.thoughtworks.parking_lot.parkingInfo.ParkingLot;
+import com.thoughtworks.parking_lot.entity.ParkingLot;
 import com.thoughtworks.parking_lot.service.ParkingLotService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -95,5 +95,12 @@ public class ParkingLotControllerTest {
                 .content(new ObjectMapper().writeValueAsString(parkingLot)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("P001")));
+    }
+
+    @Test
+    void should_fetch_car_given_car_number() throws Exception {
+        mvc.perform(put("/parkinglots/cars/P001"))
+                .andExpect(status().isOk());
+        verify(parkingLotService).fetchCar(anyString());
     }
 }
